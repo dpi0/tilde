@@ -34,7 +34,7 @@
     ['f', { name: 'Figma', url: 'https://www.figma.com' }],
     ['g', { name: 'GitHub', searchTemplate: '/search?q={}', url: 'https://github.com' }],
     ['k', { name: 'Keep', url: 'https://keep.google.com' }],
-    ['n', { name: 'Notion', url: 'https://www.notion.so' }],
+    ['l', { name: 'localhost', suggestions: ['l/8080', 'l/3000', 'l/2020', 'l/8000'], url: 'http://localhost:' }],
     ['p', { name: 'Proton', searchTemplate: '/u/0/all-mail#keyword={}', suggestions: ['p/drive'], url: 'https://mail.proton.me/u/0/inbox' }],
     ['p/drive', { url: 'https://drive.proton.me/u/0/' }],
     ['r', { name: 'Reddit', searchTemplate: '/search/?q={}', suggestions: ['r/selfhosted', 'r/dataisbeautiful', 'r/fujix', 'r/r/leetcode'], url: 'https://reddit.com/r' }],
@@ -44,9 +44,6 @@
     ['x/pomo', { url: 'https://pomodoro.xvvvyz.xyz' }],
     ['x/torrent', { url: 'https://torrent.xvvvyz.xyz' }],
     ['y', { name: 'YouTube', searchTemplate: '/results?search_query={}', url: 'https://youtube.com/feed/subscriptions' }],
-    ['0', { name: 'local', suggestions: ['0:54323', '0:54324'], url: 'http://localhost:3000' }],
-    ['0:54323', { url: 'http://localhost:54323' }],
-    ['0:54324', { url: 'http://localhost:54324' }],
   ]);
 </script>
 
@@ -368,7 +365,9 @@
         const url =
           command.searchTemplate && !path
             ? `${command.url}${command.searchTemplate.replace('{}', path)}`
-            : `${command.url}/${path}`;
+            : pathKey === 'l' // special case for 'l' command
+            ? `${command.url}${path}` // concatenate without slash
+            : `${command.url}/${path}`; // original behavior for other commands
         return { key: pathKey, path, query, splitBy, url };
       }
 
